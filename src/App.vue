@@ -12,5 +12,6 @@
 </script>
 
 <style>
-  @import 'assets/css/global.css'
+  @import 'assets/css/global.css';
+  @import 'assets/icon/iconfont.css'
 </style>

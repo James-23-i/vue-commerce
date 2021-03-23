@@ -1,5 +1,5 @@
 <template>
-  <div>Welcome</div>
+  <div>欢迎来到后台电商管理系统！</div>
 </template>
 
 <script>

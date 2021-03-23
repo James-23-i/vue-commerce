@@ -15,7 +15,16 @@
           el-submenu一级菜单和el-menu-item二级菜单，用作遍历。
           绑定index值是唯一的，才不会和unique-opened冲突。
            -->
-          <el-menu background-color="#333744" text-color="#fff" active-text-color="#24acf2" unique-opened :collapse="isCollaspe" :collapse-transition="false" router :default-active="activePath">
+          <el-menu
+            background-color="#333744"
+            text-color="#fff"
+            active-text-color="#24acf2"
+            unique-opened
+            :collapse="isCollaspe"
+            :collapse-transition="false"
+            router
+            :default-active="activePath"
+          >
             <div class="collapse" @click="collapseMenu">|||</div>
             <el-submenu :index="item.id + ''" v-for="item in menuList" :key="item.id">
               <template slot="title">
@@ -23,10 +32,15 @@
                 <span>{{ item.authName }}</span>
               </template>
               <!-- 绑定index，作为 router的跳转path -->
-              <el-menu-item v-for="item1 in item.children" :key="item1.id" :index="item1.path" @click="activeTab(item1.path)">
-                <i class="el-icon-menu"></i>
-                {{ item1.authName }}</el-menu-item
+              <el-menu-item
+                v-for="item1 in item.children"
+                :key="item1.id"
+                :index="item1.path"
+                @click="activeTab(item1.path)"
               >
+                <i class="el-icon-menu"></i>
+                {{ item1.authName }}
+              </el-menu-item>
             </el-submenu>
           </el-menu>
         </el-aside>
@@ -36,7 +50,12 @@
       </el-container>
     </el-container>
     <!-- 弹窗是否退出登录 -->
-    <el-dialog title="是否退出登录?" :visible.sync="logoutDialogVisible" width="30%" @close="closeLogout">
+    <el-dialog
+      title="是否退出登录?"
+      :visible.sync="logoutDialogVisible"
+      width="30%"
+      @close="closeLogout"
+    >
       <span slot="footer">
         <el-button @click="logoutDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="logoutDia">确 定</el-button>
@@ -63,7 +82,7 @@ export default {
       // 保存菜单栏的激活状态
       activePath: '',
       // 退出弹窗
-      logoutDialogVisible: false
+      logoutDialogVisible: false,
     }
   },
   created() {

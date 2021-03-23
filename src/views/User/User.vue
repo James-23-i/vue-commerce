@@ -12,7 +12,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <!-- 带按钮的输入框（输入框绑定query值） -->
-          <el-input placeholder="请输入内容" v-model="queryInfo.query" clearable @clear="clearInfo">
+          <el-input placeholder="请输入内容" v-model="queryInfo.query" @input="changeInput" clearable @clear="clearInfo">
             <el-button slot="append" icon="el-icon-search" @click="queryInfoList"></el-button>
           </el-input>
         </el-col>
@@ -40,13 +40,13 @@
         <el-table-column class="operation" label="操作" width="220px">
           <template slot-scope="scope">
             <el-tooltip class="item" effect="dark" content="修改" placement="top-start" :enterable="false">
-              <el-button type="primary" @click="altUser(scope.row)" icon="el-icon-edit"></el-button>
+              <el-button type="primary" @click="altUser(scope.row.id)" icon="el-icon-edit"></el-button>
             </el-tooltip>
             <el-tooltip class="item" effect="dark" content="删除" placement="top-start" :enterable="false">
-              <el-button type="danger" @click="delUser(scope.row)" icon="el-icon-delete"></el-button>
+              <el-button type="danger" @click="delUser(scope.row.id)" icon="el-icon-delete"></el-button>
             </el-tooltip>
-            <el-tooltip class="item" effect="dark" content="设置" placement="top-start" :enterable="false">
-              <el-button type="warning" icon="el-icon-setting"></el-button>
+            <el-tooltip class="item" effect="dark" content="分配角色" placement="top-start" :enterable="false">
+              <el-button @click="allotRoles(scope.row)" type="warning" icon="el-icon-setting"></el-button>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -102,11 +102,26 @@
         <el-button type="primary" @click="editUserData">确 定</el-button>
       </span>
     </el-dialog>
+    <!-- 对话框分配角色区域 -->
+    <el-dialog title="分配角色" :visible.sync="allotDialogVisible" @close="allotRolesClose" width="40%">
+      <div>当前的用户：{{ allotUserInfo.username }}</div>
+      <div>当前的角色：{{ allotUserInfo.role_name }}</div>
+      <div>
+        分配新角色：
+        <el-select v-model="selectedRoleId" placeholder="请选择">
+          <el-option v-for="item in rolesList" :key="item.id" :label="item.roleName" :value="item.id"> </el-option>
+        </el-select>
+      </div>
+      <span slot="footer">
+        <el-button @click="allotDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="allotUserRoles">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getUserData, changeState, addUserInfo, altUserInfo, submitEdit, delUserInfo } from '@/network/home'
+import { getUserData, changeState, addUserInfo, altUserInfo, submitEdit, delUserInfo, allotUser, getRolesData } from '@/network/users'
 import moment from 'moment'
 export default {
   name: 'user',
@@ -123,6 +138,10 @@ export default {
       callback(new Error('请输入有效的手机号码'))
     }
     return {
+      // 分配角色数据
+      allotUserInfo: {},
+      selectedRoleId: '',
+      rolesList: [],
       // 获取用户列表的参数
       queryInfo: {
         query: '',
@@ -134,9 +153,10 @@ export default {
       total: 0,
       // 用户列表数据
       usersList: [],
-      // 是否展示添加、修改、删除、对话框
+      // 是否展示添加、修改、删除、对话框，分配权限
       addDialogVisible: false,
       altDialogVisible: false,
+      allotDialogVisible: false,
       // 表单校验，添加修改删除
       addForm: {
         username: '',
@@ -215,6 +235,9 @@ export default {
     queryInfoList() {
       this.getUserData()
     },
+    changeInput() {
+      this.queryInfo.query === '' && this.getUserData()
+    },
     // 输入框清除时，展示全部数据
     clearInfo() {
       this.getUserData()
@@ -253,25 +276,26 @@ export default {
     altDialogClose() {
       this.$refs.altRuleForm.resetFields()
     },
+    allotRolesClose() {
+      this.selectedRoleId = ''
+    },
     // 点击修改用户信息
-    async altUser(data) {
-      console.log(data)
-      // 获取id，根据id发送请求修改数据
-      const id = data.id
+    async altUser(id) {
+      // 根据id发送请求修改数据
       this.altDialogVisible = true
       const res = await altUserInfo(id)
       // 将获取的数据绑定为editForm
       this.editForm = res.data
     },
     // 点击删除用户信息
-    delUser(data) {
-      const id = data.id
+    delUser(id) {
+      // 根据id删除用户
       this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       })
-        .then( async () => {
+        .then(async () => {
           const res = await delUserInfo(id)
           this.getUserData()
           this.$message({
@@ -294,10 +318,31 @@ export default {
       }
       return moment(date * 1000).format('YYYY-MM-DD')
     },
+    // 分配角色的事件
+    async allotRoles(role) {
+      // 获取当前用户和角色，当前用户id
+      const { username, role_name, id } = role
+      this.allotUserInfo = { username, role_name, id }
+
+      // 获取角色列表的角色，赋值给分配新角色
+      const res = await getRolesData()
+      this.rolesList = res.data
+      this.allotDialogVisible = true
+    },
+    async allotUserRoles() {
+      // 获取角色id和用户id
+      const id = this.allotUserInfo.id
+      const rid = this.selectedRoleId
+      if (!rid) return this.$message.warning('请选择新的角色！')
+      const res = await allotUser(id, rid)
+      if (res.meta.status == 400) return this.$message.warning('不允许修改admin账户！')
+      this.allotDialogVisible = false
+      this.$message.success('分配角色成功！')
+      this.getUserData()
+    },
     // 网络请求
     async getUserData() {
       const res = await getUserData(this.queryInfo.query, this.queryInfo.pagenum, this.queryInfo.pagesize)
-      console.log(res)
       this.usersList = res.data.users
       this.total = res.data.total
     },
@@ -308,5 +353,8 @@ export default {
 <style lang='scss' scoped>
 .el-tooltip {
   margin-left: 8px;
+}
+.el-dialog div {
+  margin-top: 10px;
 }
 </style>

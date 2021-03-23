@@ -3,9 +3,10 @@ html, body, #app{
   width: 100%;
   margin: 0;
   padding: 0;
+  min-width: 1366px;
 }
 
 /* 列表数据的样式 */
-.el-card, .el-table, .el-pagination{
+.el-card, .el-table, .el-pagination, .el-tabs, .el-step{
   margin-top: 20px;
 }

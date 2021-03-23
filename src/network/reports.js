@@ -1,6 +1,6 @@
 import { request } from './request'
-export function getMenuData() {
+export function getTotalData() {
   return request({
-    url: 'menus',
+    url: 'reports/type/1'
   })
 }

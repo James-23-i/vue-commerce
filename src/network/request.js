@@ -9,7 +9,9 @@ export function request(config) {
 
   instance.interceptors.request.use(config => {
     // 携带token认证，请求头Authorization
-    config.headers.Authorization = window.sessionStorage.getItem('token')
+    // config.headers.Authorization = window.sessionStorage.getItem('token')
+    const token = window.sessionStorage.getItem("token");
+    token && (config.headers.Authorization = token);
     return config
   }, err => {
     return err
@@ -18,6 +20,16 @@ export function request(config) {
   instance.interceptors.response.use(res => {
     return res.data
   }, err => {
+    if(err && err.response) {
+      switch (err.response.status) {
+        case 400:
+          err.message = '请求错误'
+          break
+        case 401:
+            err.message = '未授权访问'
+            break
+      }
+    }
     return err
   })
   

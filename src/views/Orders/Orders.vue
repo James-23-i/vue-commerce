@@ -164,7 +164,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='less' scoped>
 .iconfont {
   font-size: 12px;
 }

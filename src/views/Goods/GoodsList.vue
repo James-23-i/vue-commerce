@@ -18,6 +18,14 @@
         <el-col :span="4">
           <el-button type="primary" @click="addGoods">添加商品</el-button>
         </el-col>
+        <el-col :span="4">
+          <download-excel-json class="btn btn-default" :data="goodsListFilterTime" :fields="json_fields" name="商品数据.xls">
+            <el-button type="primary">导出1</el-button>
+          </download-excel-json>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="primary" @click="exportExcelData">导出2</el-button>
+        </el-col>
       </el-row>
       <!-- 表格 -->
       <el-table :data="goodsList" stripe border style="width: 100%">
@@ -65,6 +73,7 @@
 
 <script>
 import { getGoodsList, queryGoodsById, editGoodsById, deleteGoods } from '@/network/goods'
+import exportExcel from '../../utils/exportExcel'
 import moment from 'moment'
 export default {
   name: 'GoodsList',
@@ -98,6 +107,31 @@ export default {
         pagesize: 15,
       },
       goodsList: [],
+      // excel
+      json_fields: {
+        商品名称: 'goods_name',
+        商品价格: 'goods_price',
+        商品重量: 'goods_weight',
+        创建时间: 'add_time',
+      },
+      tHeader: [
+        {
+          title: '商品名称',
+          key: 'goods_name'
+        },
+        {
+          title: '商品价格',
+          key: 'goods_price'
+        },
+        {
+          title: '商品重量',
+          key: 'goods_weight'
+        },
+        {
+          title: '创建时间',
+          key: 'add_time'
+        }
+      ],
       total: 0,
       goods_id: '',
       editForm: {},
@@ -111,7 +145,23 @@ export default {
   created() {
     this.getGoodsList()
   },
+  computed: {
+    // 导出Excel时间戳的转换
+    goodsListFilterTime() {
+      return this.goodsList.map(item => {
+        return {
+          ...item,
+          add_time: moment(item.add_time * 1000).format('YYYY-MM-DD')
+        }
+      })
+    }
+  },
   methods: {
+    //导出Excel
+    exportExcelData() {
+          debugger
+      exportExcel(this.tHeader, this.goodsListFilterTime, '商品数据')
+    },
     // 查询商品和清除查询
     queryGoods() {
       this.getGoodsList()
@@ -137,7 +187,7 @@ export default {
       this.$refs.editFormRef.resetFields()
     },
     editGoodsBtn() {
-      this.$refs.editFormRef.validate(async valid => {
+      this.$refs.editFormRef.validate(async (valid) => {
         if (!valid) return
         const res = await editGoodsById(this.goods_id, this.editForm)
         this.$message.success('编辑商品成功！')
@@ -189,10 +239,11 @@ export default {
       const res = await getGoodsList(this.queryGoodsList.query, this.queryGoodsList.pagenum, this.queryGoodsList.pagesize)
       this.goodsList = res.data.goods
       this.total = res.data.total
+      console.log(this.goodsList)
     },
   },
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='less' scoped>
 </style>

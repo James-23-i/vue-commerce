@@ -10,6 +10,9 @@ import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
 import * as echarts from 'echarts'
+import JsonExcel from "vue-json-excel";
+
+Vue.component("downloadExcelJson", JsonExcel);
 
 Vue.use(VueQuillEditor)
 Vue.component('tree-table', TreeTable)

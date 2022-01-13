@@ -73,7 +73,7 @@
         </el-form-item>
         <!-- 当选择了级联选择器商品，代表在哪个层级下添加商品 -->
         <el-form-item label="父级分类">
-          <!-- 
+          <!--
             v-model绑定选中级联的id，
             options可选项数据源，
             props配置选项，
@@ -216,7 +216,7 @@ export default {
     // 监听级联框中选中数据的id
     handleChange() {
       // console.log(this.selectKeys);
-      /* 
+      /*
         修改添加分类中的数据
         当selectkeys.length = 0，说明没有选中父级分类数据，添加一级数据
         当selectkeys.length > 0，（且长度和级联的等级一致，父级分类ID为最后一个元素的ID）说明选中父级分类数据，添加在选中层级下的数据
@@ -302,7 +302,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="less" scoped>
 .tree-table {
   margin-top: 20px;
 }

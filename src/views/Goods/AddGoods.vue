@@ -245,7 +245,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="less" scoped>
 .warningalert {
   height: 40px;
   width: 300px;

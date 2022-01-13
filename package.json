@@ -11,12 +11,18 @@
     "core-js": "^3.6.5",
     "echarts": "^5.0.2",
     "element-ui": "2.15.1",
+    "export-excel-sheet-vue-js": "^1.0.2",
+    "file-saver": "^2.0.5",
+    "less": "^3.0.4",
+    "less-loader": "^5.0.0",
     "moment": "^2.29.1",
     "nprogress": "^0.2.0",
     "vue": "^2.6.11",
+    "vue-json-excel": "^0.3.0",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.2.0",
-    "vue-table-with-tree-grid": "^0.2.4"
+    "vue-table-with-tree-grid": "^0.2.4",
+    "xlsx": "^0.17.0"
   },
   "devDependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
@@ -24,8 +30,7 @@
     "@vue/cli-service": "^4.5.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "css-loader": "^5.1.2",
-    "node-sass": "^4.14.1",
-    "sass-loader": "^8.0.0",
+    "script-loader": "^0.7.2",
     "vue-particles": "^1.0.9",
     "vue-template-compiler": "^2.6.11",
     "webpack-bundle-analyzer": "^4.4.0"

@@ -10,7 +10,7 @@
       </el-header>
       <el-container class="el-container">
         <el-aside :width="isCollaspe ? '60px' : '200px'">
-          <!-- 
+          <!--
           el-menu一般设置属性。
           el-submenu一级菜单和el-menu-item二级菜单，用作遍历。
           绑定index值是唯一的，才不会和unique-opened冲突。
@@ -32,12 +32,7 @@
                 <span>{{ item.authName }}</span>
               </template>
               <!-- 绑定index，作为 router的跳转path -->
-              <el-menu-item
-                v-for="item1 in item.children"
-                :key="item1.id"
-                :index="item1.path"
-                @click="activeTab(item1.path)"
-              >
+              <el-menu-item v-for="item1 in item.children" :key="item1.id" :index="item1.path" @click="activeTab(item1.path)">
                 <i class="el-icon-menu"></i>
                 {{ item1.authName }}
               </el-menu-item>
@@ -50,12 +45,7 @@
       </el-container>
     </el-container>
     <!-- 弹窗是否退出登录 -->
-    <el-dialog
-      title="是否退出登录?"
-      :visible.sync="logoutDialogVisible"
-      width="30%"
-      @close="closeLogout"
-    >
+    <el-dialog title="是否退出登录?" :visible.sync="logoutDialogVisible" width="30%" @close="closeLogout">
       <span slot="footer">
         <el-button @click="logoutDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="logoutDia">确 定</el-button>
@@ -122,7 +112,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='less' scoped>
 #home {
   .container {
     height: 100vh;

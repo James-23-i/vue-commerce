@@ -350,7 +350,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='less' scoped>
 .el-tooltip {
   margin-left: 8px;
 }

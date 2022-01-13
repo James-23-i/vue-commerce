@@ -5,13 +5,15 @@
 </template>
 
 <script>
-  export default {
-    name: 'App',
-    
-  }
+export default {
+  name: 'App',
+  data() {
+    return {}
+  },
+}
 </script>
 
 <style>
-  @import 'assets/css/global.css';
-  @import 'assets/icon/iconfont.css'
+@import 'assets/css/global.css';
+@import 'assets/icon/iconfont.css';
 </style>

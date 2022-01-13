@@ -290,13 +290,14 @@ export default {
     // 网络请求
     async getRolesData() {
       const res = await getRolesData()
+      console.log(res);
       this.rolesData = res.data
     },
   },
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='less' scoped>
 .el-tag {
   margin: 7px !important;
 }

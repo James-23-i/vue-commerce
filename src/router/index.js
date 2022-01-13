@@ -14,6 +14,7 @@ const GoodsList = () => import('@/views/Goods/GoodsList')
 const AddGoods = () => import('@/views/Goods/AddGoods')
 const Orders = () => import( '@/views/Orders/Orders')
 const Reports = () => import( '@/views/Reports/Reports')
+const NotFound = () => import( '@/views/NotFound/NotFound')
 
 
 Vue.use(VueRouter)
@@ -35,7 +36,8 @@ const routes = [
       { path: '/orders', component: Orders },
       { path: '/reports', component: Reports },
     ]
-  }
+  },
+  { path: '*', component: NotFound }
 ]
 
 const router = new VueRouter({
@@ -46,6 +48,8 @@ const router = new VueRouter({
 
 // 全局前置守卫
 router.beforeEach((to, from, next) => {
+  console.log(to);
+  console.log(from);
   // 当token不存在时，不能进行跳转
   if (to.path == '/Login') return next()
   const token = window.sessionStorage.getItem('token')

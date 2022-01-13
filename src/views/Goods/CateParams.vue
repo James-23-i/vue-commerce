@@ -318,7 +318,7 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang='less' scoped>
 .selectCate {
   margin-top: 20px;
 }

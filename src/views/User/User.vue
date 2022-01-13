@@ -12,7 +12,7 @@
       <el-row :gutter="20">
         <el-col :span="8">
           <!-- 带按钮的输入框（输入框绑定query值） -->
-          <el-input placeholder="请输入内容" v-model="queryInfo.query" @input="changeInput" clearable @clear="clearInfo">
+          <el-input placeholder="请输入姓名查询" v-model="queryInfo.query" @input="changeInput" clearable @clear="clearInfo">
             <el-button slot="append" icon="el-icon-search" @click="queryInfoList"></el-button>
           </el-input>
         </el-col>
@@ -24,7 +24,7 @@
       <el-table :data="usersList" style="width: 100%" stripe border>
         <el-table-column type="index"></el-table-column>
         <!-- 绑定时间戳 -->
-        <el-table-column prop="create_time" label="日期" :formatter="dateFormat"></el-table-column>
+        <!-- <el-table-column prop="create_time" label="创建日期" :formatter="dateFormat"></el-table-column> -->
         <el-table-column prop="username" label="姓名"></el-table-column>
         <el-table-column prop="email" label="邮箱"></el-table-column>
         <el-table-column prop="mobile" label="电话"></el-table-column>
@@ -148,7 +148,7 @@ export default {
         // 当前页
         pagenum: 1,
         // 页的容量
-        pagesize: 2,
+        pagesize: 10,
       },
       total: 0,
       // 用户列表数据
@@ -316,7 +316,7 @@ export default {
       if (date == undefined) {
         return ''
       }
-      return moment(date * 1000).format('YYYY-MM-DD')
+      return moment(date * 1000).format('YYYY-MM-DD hh:mm:ss')
     },
     // 分配角色的事件
     async allotRoles(role) {

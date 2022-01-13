@@ -199,7 +199,7 @@ export default {
     // 添加商品
     addBtnGoods() {
       this.$refs.baseFormRef.validate(async (valid) => {
-        if (!valid) return $this.$message.error('请填写商品基本信息！')
+        if (!valid) return this.$message.error('请填写商品基本信息！')
         // 添加商品逻辑
         // 由于请求接口goods_cat是字符串形式，所有要进行转换。而goods_cat又双向绑定级联选择器，不能进行转换
         // 通过深拷贝生成新对象，再进行转换

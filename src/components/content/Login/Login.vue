@@ -104,7 +104,6 @@ export default {
         )
         if (res.meta.status !== 200) return this.$message.error('登录失败！')
         this.$message.success('登录成功！')
-        console.log(res);
         // 登录成功后，将token存入缓存中（并且跳转到Home页面）
         const { token } = res.data
         window.sessionStorage.setItem('token', token)

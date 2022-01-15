@@ -33,7 +33,7 @@
         <el-table-column show-overflow-tooltip prop="goods_name" label="商品名称" width="700px"></el-table-column>
         <el-table-column prop="goods_price" label="商品价格（元）"></el-table-column>
         <el-table-column prop="goods_weight" label="商品重量"></el-table-column>
-        <el-table-column prop="add_time" label="创建时间" :formatter="dateFormat"></el-table-column>
+        <!-- <el-table-column prop="add_time" label="创建时间" :formatter="dateFormat"></el-table-column> -->
         <el-table-column label="操作" width="120px">
           <template slot-scope="scope">
             <el-button size="mini" type="primary" icon="el-icon-edit" @click="editGoods(scope.row.goods_id)"></el-button>
@@ -174,7 +174,7 @@ export default {
     },
     // 添加商品
     addGoods() {
-      this.$router.push('/goods/addGoods')
+      this.$router.push('/addGoods')
     },
     // 编辑商品
     async editGoods(id) {
@@ -239,7 +239,6 @@ export default {
       const res = await getGoodsList(this.queryGoodsList.query, this.queryGoodsList.pagenum, this.queryGoodsList.pagesize)
       this.goodsList = res.data.goods
       this.total = res.data.total
-      console.log(this.goodsList)
     },
   },
 }

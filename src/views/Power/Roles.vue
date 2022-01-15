@@ -290,7 +290,6 @@ export default {
     // 网络请求
     async getRolesData() {
       const res = await getRolesData()
-      console.log(res);
       this.rolesData = res.data
     },
   },

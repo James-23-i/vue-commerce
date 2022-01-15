@@ -23,7 +23,11 @@
         <el-table-column type="index"></el-table-column>
         <el-table-column prop="order_number" label="订单编号" width="600px"></el-table-column>
         <el-table-column prop="order_price" label="订单价格"></el-table-column>
-        <el-table-column prop="consignee_addr" label="订单地址"></el-table-column>
+        <el-table-column prop="consignee_addr" label="订单地址">
+          <template slot-scope="scope">
+            <span>{{scope.row.consignee_addr.replaceAll(',', '')}}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="订单支付">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.order_pay === '0'" type="danger">未支付</el-tag>
@@ -32,9 +36,9 @@
             <el-tag v-else-if="scope.row.order_pay === '3'" type="info">银行卡</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="order_fapiao_company" label="公司名称"></el-table-column>
-        <el-table-column prop="order_fapiao_content" label="发票内容"></el-table-column>
-        <el-table-column prop="order_fapiao_title" label="发票标题"></el-table-column>
+        <!-- <el-table-column prop="order_fapiao_company" label="公司名称"></el-table-column>
+        <el-table-column prop="order_fapiao_content" label="发票内容"></el-table-column> -->
+        <!-- <el-table-column prop="order_fapiao_title" label="发票标题"></el-table-column> -->
         <el-table-column label="是否发货">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.is_send === '否'" type="danger">未发货</el-tag>
@@ -129,15 +133,15 @@ export default {
         pagenum: 1,
         pagesize: 10,
       },
-      is_send: 0,
+      is_send: '否',
       order_pay: '0',
       options: [
         {
-          value: 0,
+          value: '否',
           label: '未发货',
         },
         {
-          value: 1,
+          value: '是',
           label: '已发货',
         },
       ],
@@ -213,10 +217,11 @@ export default {
       const res = await detailOrdersData(id)
       this.addrForm.pay_status = res.data.pay_status
       this.addrForm.order_number = res.data.order_number
-      this.addrForm.consignee_addr = res.data.consignee_addr
+      this.addrForm.consignee_addr = res.data.consignee_addr.split(',')
       this.addrForm.order_price = res.data.order_price
       this.addrForm.user_id = res.data.user_id
-      this.addrForm.order_pay = res.data.order_pay
+      this.order_pay = res.data.order_pay
+      this.is_send = res.data.is_send
       this.editId = id
       this.editAddrDialogVisible = true
     },
@@ -230,16 +235,15 @@ export default {
     },
     async queryOrdersData() {
       const res = await queryOrdersData(this.queryOrders)
-      console.log(res)
       this.ordersList = res.data.goods
       this.total = res.data.total
     },
     async addOrders() {
       const res = await editOrdersData(this.editId, {
         ...this.addrForm,
-        is_send: this.is_send,
+        is_send: this.is_send === '否' ? 0 : 1,
         order_pay :this.order_pay,
-        consignee_addr: this.addrForm.consignee_addr && this.addrForm.consignee_addr.map((item) => item).join(''),
+        consignee_addr: this.addrForm.consignee_addr && this.addrForm.consignee_addr.map((item) => item).join(','),
       })
       if (res) {
         this.editAddrDialogVisible = false

@@ -239,7 +239,6 @@ export default {
       })
         .then(async () => {
           const res = await deleteParams(this.cascaderId, attr_id)
-          console.log(res)
           this.getCateParams()
           this.$message.success('删除参数成功！')
           this.$message({
